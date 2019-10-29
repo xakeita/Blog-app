@@ -2,11 +2,43 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <title>{% block title %}{% endblock %}</title>
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+        <style>
+            li {
+                list-style: none;
+            }
+            
+            a {
+                color: #333;
+            }
+        </style>
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        <div class="header">
+            <nav class="navbar navbar-dark bg-dark mt-3 mb-3 justify-content-center">
+                <a href="/home" class="navbar-brand">
+                    ブログ
+                </a>
+                <ul class="navbar-nav mr-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/post">記事投稿</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav mr-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/update">記事編集</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="text-center">
+            {% block body %}
+            {% endblock %}
+        </div>
     </body>
 </html>

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ブログ{% endblock %}
+
+{% block body %}
+    <h2>記事一覧</h2>
+     <ul>
+         {% for item in data %}
+             <li>
+                 <a href="/home/{{ item.id }}">{{ item.title }}</a>
+             </li>
+         {% endfor %}
+     </ul>
+{% endblock %}
