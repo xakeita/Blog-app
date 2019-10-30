@@ -3,7 +3,7 @@
 {% block title %}Article{% endblock %}
 
 {% block body %}
-    <h1>Article</h1>
+    <h1>記事</h1>
 
     <table class="table">
         <tbody>
@@ -12,23 +12,23 @@
                 <td>{{ article.id }}</td>
             </tr>
             <tr>
-                <th>Title</th>
+                <th>タイトル</th>
                 <td>{{ article.title }}</td>
             </tr>
             <tr>
-                <th>Content</th>
+                <th>内容</th>
                 <td>{{ article.content }}</td>
             </tr>
             <tr>
-                <th>Created_at</th>
+                <th>投稿日</th>
                 <td>{{ article.createdAt ? article.createdAt|date('Y-m-d') : '' }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('article_index') }}">back to list</a>
+    <a href="{{ path('article_index') }}">戻る</a>
 
-    <a href="{{ path('article_edit', {'id': article.id}) }}">edit</a>
+    <a href="{{ path('article_edit', {'id': article.id}) }}">編集する</a>
 
     {{ include('article/_delete_form.html.twig') }}
 {% endblock %}

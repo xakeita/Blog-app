@@ -3,19 +3,21 @@
 namespace App\Controller;
 
 use App\Entity\Article;
-use App\Form\Article1Type;
+use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/article")
- */
+
 class ArticleController extends AbstractController
 {
     /**
+     * 記事一覧を取得
+     *
+     * @param ArticleRepository $articleRepository
      * @Route("/", name="article_index", methods={"GET"})
      */
     public function index(ArticleRepository $articleRepository): Response
@@ -26,16 +28,20 @@ class ArticleController extends AbstractController
     }
 
     /**
+     * 記事投稿
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
      * @Route("/new", name="article_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $article = new Article();
-        $form = $this->createForm(Article1Type::class, $article);
+        $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $article = $form->getData();
             $entityManager->persist($article);
             $entityManager->flush();
 
@@ -49,6 +55,9 @@ class ArticleController extends AbstractController
     }
 
     /**
+     * 記事取得
+     *
+     * @param Article $article
      * @Route("/{id}", name="article_show", methods={"GET"})
      */
     public function show(Article $article): Response
@@ -59,15 +68,20 @@ class ArticleController extends AbstractController
     }
 
     /**
+     * 記事を編集する
+     *
+     * @param Request $request
+     * @param Article $article
+     * @param EntityManagerInterface $entityManager
      * @Route("/{id}/edit", name="article_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Article $article): Response
+    public function edit(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(Article1Type::class, $article);
+        $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
 
             return $this->redirectToRoute('article_index');
         }
@@ -79,12 +93,16 @@ class ArticleController extends AbstractController
     }
 
     /**
+     * 記事を削除する
+     *
+     * @param Request $request
+     * @param Article $article
+     * @param EntityManagerInterface $entityManager
      * @Route("/{id}", name="article_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Article $article): Response
+    public function delete(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
+        if ($this->isCsrfTokenValid('article_delete'.$article->getId(), $request->get('_delete_token'))) {
             $entityManager->remove($article);
             $entityManager->flush();
         }
