@@ -29,10 +29,13 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5">記事はありません</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <div class="navigation">
+        {{ knp_pagination_render(articles) }}
+    </div>
 
 {% endblock %}
