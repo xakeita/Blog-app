@@ -24,7 +24,7 @@ class ArticleController extends AbstractController
      */
     public function index(ArticleRepository $articleRepository, Request $request, PaginatorInterface $paginator): Response
     {
-        $allArticleQuery = $articleRepository->createQueryBuilder('p')->getQuery();
+        $allArticleQuery = $articleRepository->createQueryBuilder('article');
 
         $article = $paginator->paginate(
             $allArticleQuery,
